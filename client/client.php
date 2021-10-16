@@ -3,31 +3,11 @@
 require_once("../server/config.php");
 require_once("../server/endpoint.php");
 
-$category = $_POST["Category"];
-$input = $_POST["Search"];
-
-if (empty($category) || empty($input))
-    exit("Invalid search!");
+$uri = explode("/", $_SERVER["PATH_INFO"]);
+parse_str($_SERVER["QUERY_STRING"], $query);
 
 $endpoint = new Endpoint();
 
-// This could be generalized by building the function call
-// from the query string directly. eg.
-// $function_name = "get"."Books"."ISBN".(input);
-// $function_name = "get"."Movies"."IMDB".(input);
-// $function_name = "get"."Movies"."Title".(input);
-// $endpoint->{$function_name}($input);
-
-if ($category == "Books")
-{
-    $endpoint->getBookByISBN($input);
-}
-else if ($category == "Movies")
-{
-    if (strncmp($input, "tt", 2) == 0)
-        $endpoint->getMovieByIMDBId($input);
-    else
-        $endpoint->getMovieByTitle($input);
-}
+$endpoint->{$uri[1]}($query);
 
 ?>
