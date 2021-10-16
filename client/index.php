@@ -5,7 +5,7 @@
 </head>
 <body>
 
-<form action="client.php" method="post">
+<form action="index.php" method="GET">
 
     <label>Search for</label>
 
@@ -21,6 +21,8 @@
     </div>
 
     <input type="text" pattern="[a-zA-Z0-9 :_]+" placeholder="Search..." class="form-input" name="txt" id="txt">
+
+    <?php include 'client.php';?>
 
 </div>
 

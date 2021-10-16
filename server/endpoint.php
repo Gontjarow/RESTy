@@ -21,7 +21,12 @@ class Endpoint extends Backend
     {
         $url = MOVIES_URI."?apikey=".MOVIES_API."&t=".$title;
 
-        echo "Movie!"; // todo
+        $data = file_get_contents($url);
+
+        //? $stuff = json_decode($data);
+        //? $stuff = json_encode($data);
+        echo $data;
+        //echo "Movie!"; // todo
     }
 }
 

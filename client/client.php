@@ -1,32 +1,31 @@
-#!/usr/local/bin/php -q
 <?php
 
-$socket  = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
-assert($socket, socket_strerror(socket_last_error()));
+$category = $_GET["Category"];
+$input = $_GET["txt"];
 
-$address = "127.0.0.1";
-$port    = 8000;
+if (empty($category) || empty($input))
+    exit("Invalid search!");
 
-$connected = socket_connect($socket, $address, $port);
-assert($connected, socket_strerror(socket_last_error()));
+require_once("../server/config.php");
+$endpoint = new Endpoint();
 
-echo "Connected!\n";
+// This could be generalized by building the function call
+// from the query string directly. eg.
+// $function_name = "get"."Books"."ISBN".(input);
+// $function_name = "get"."Movies"."IMDB".(input);
+// $function_name = "get"."Movies"."Title".(input);
+// $endpoint->{$function_name}($input);
 
-
-$message = "Test";
-$status = socket_sendto($socket, $message, strlen($message), 0, $address, $port);
-
-if ($status === FALSE)
+if ($category == "Books")
 {
-    exit("Failed to send.");
+    $endpoint->getBookByISBN($input);
 }
-
-echo "Got this far!\n";
-
-// Get response from endpoint?
-// Warn: Waits forever if no response.
-//echo socket_read($socket, 4096);
-
-socket_close($socket);
+else if ($category == "Movies")
+{
+    if (strncmp($input, "tt", 2) == 0)
+        $endpoint->getMovieByIMDBId($input);
+    else
+        $endpoint->getMovieByTitle($input);
+}
 
 ?>
