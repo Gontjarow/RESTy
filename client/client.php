@@ -1,12 +1,11 @@
 <?php
 
 require_once("../server/config.php");
+require_once("../server/endpoint.php");
 
 $category = $_POST["Category"];
 $input = $_POST["Search"];
 
-if (empty($category) && empty($input))
-    exit();
 if (empty($category) || empty($input))
     exit("Invalid search!");
 

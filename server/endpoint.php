@@ -1,5 +1,8 @@
 <?php
 
+require_once("../server/config.php");
+require_once("../server/backend.php");
+
 class Endpoint extends Backend
 {
     // todo: Validate input before using endpoints?
@@ -19,6 +22,8 @@ class Endpoint extends Backend
 
     public function getMovieByTitle($title)
     {
+        $this->renewJWT();
+
         $url = MOVIES_URI."?apikey=".MOVIES_API."&t=".$title;
 
         $data = file_get_contents($url);
