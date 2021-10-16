@@ -1,12 +1,15 @@
 <?php
 
-$category = $_GET["Category"];
-$input = $_GET["txt"];
+require_once("../server/config.php");
 
+$category = $_POST["Category"];
+$input = $_POST["Search"];
+
+if (empty($category) && empty($input))
+    exit();
 if (empty($category) || empty($input))
     exit("Invalid search!");
 
-require_once("../server/config.php");
 $endpoint = new Endpoint();
 
 // This could be generalized by building the function call
