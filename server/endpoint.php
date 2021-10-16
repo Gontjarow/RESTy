@@ -25,7 +25,7 @@ class Endpoint extends Backend
 
         //? $stuff = json_decode($data);
         //? $stuff = json_encode($data);
-        echo $data;
+        $this->respondWith($data, array("HTTP/1.1 200 OK"));
         //echo "Movie!"; // todo
     }
 }
