@@ -7,9 +7,26 @@ class Endpoint extends Backend
 {
     // todo: Validate input before using endpoints?
 
-    public function getBookByISBN()
+    public function getBooks($query = array())
     {
-        echo "Book!"; // todo
+        $this->renewJWT();
+
+        if (!is_array($query) || empty($query) || !is_numeric($query["ISBN"]))
+        {
+            $this->respondWith("ISBN must be a number!", array("HTTP/1.1 406 Not Acceptable"));
+            exit();
+        }
+
+        $url = BOOKS_URI."isbn/".$query["ISBN"].".json";
+        $data = file_get_contents($url);
+
+        if (empty($data))
+        {
+            $this->respondWith("Something went wrong!", array("HTTP/1.1 404 Not Found"));
+            exit();
+        }
+
+        $this->respondWith($data, array("HTTP/1.1 200 OK"));
     }
 
     // IMDB ID: tt1234567
