@@ -26,7 +26,39 @@ class Endpoint extends Backend
             exit();
         }
 
-        $this->respondWith($data, array("HTTP/1.1 200 OK"));
+        $this->respondWith($data,
+            array("Content-Type: application/json", "HTTP/1.1 200 OK"));
+    }
+
+    public function getMovies($query = array())
+    {
+        $this->renewJWT();
+
+        if (!is_array($query) || empty($query))
+        {
+            $this->respondNotAcceptable("Request was empty");
+            exit();
+        }
+
+        if (count($query) != 3
+        || empty($query["Title"]))
+        {
+            $this->respondNotAcceptable("Required: Title");
+            exit();
+        }
+
+        $url = MOVIES_URI."?apikey=".MOVIES_API."&t=".$query["Title"];
+        if (!empty($query["Plot"])) $url.="&plot=".$query["Plot"];
+        if (!empty($query["Year"])) $url.="&y=".$query["Year"];
+
+        $data = file_get_contents($url);
+        $arr = json_decode($data, true);
+
+        if ($arr["Response"] == "True")
+            $this->respondWith($data,
+                array("Content-Type: application/json", "HTTP/1.1 200 OK"));
+        else
+            $this->respondNotFound("Movie not found");
     }
 
     // IMDB ID: tt1234567
