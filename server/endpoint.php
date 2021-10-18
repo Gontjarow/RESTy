@@ -55,32 +55,14 @@ class Endpoint extends Backend
         $arr = json_decode($data, true);
 
         if ($arr["Response"] == "True")
+        {
             $this->respondWith($data,
                 array("Content-Type: application/json", "HTTP/1.1 200 OK"));
+        }
         else
+        {
             $this->respondNotFound("Movie not found");
-    }
-
-    // IMDB ID: tt1234567
-    public function getMovieByIMDBId($id)
-    {
-        $url = MOVIES_URI."?apikey=".MOVIES_API."&i=".$id;
-
-        echo "Movie!"; // todo
-    }
-
-    public function getMovieByTitle($title)
-    {
-        $this->renewJWT();
-
-        $url = MOVIES_URI."?apikey=".MOVIES_API."&t=".$title;
-
-        $data = file_get_contents($url);
-
-        //? $stuff = json_decode($data);
-        //? $stuff = json_encode($data);
-        $this->respondWith($data, array("HTTP/1.1 200 OK"));
-        //echo "Movie!"; // todo
+        }
     }
 }
 
