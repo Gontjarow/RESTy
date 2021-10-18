@@ -53,6 +53,7 @@ Class Backend
         }
     }
 
+    // todo: These could go into a Response class.
     protected function respondWith($data, $headers = array())
     {
         header_remove();
@@ -62,6 +63,29 @@ Class Backend
                 header($set);
 
         echo $data;
+    }
+
+    protected function respondOK($data)
+    {
+        $this->respondWith($this->json($data),
+            array("Content-Type: application/json", "HTTP/1.1 200 OK"));
+    }
+
+    protected function respondNotAcceptable($data)
+    {
+        $this->respondWith($this->json($data, true),
+            array("Content-Type: application/json", "HTTP/1.1 406 Not Acceptable"));
+    }
+
+    protected function respondNotFound($data)
+    {
+        $this->respondWith($this->json($data, true),
+            array("Content-Type: application/json", "HTTP/1.1 404 Not Found"));
+    }
+
+    protected function json($content = "", $error = false)
+    {
+        return "{\"error\":".json_encode($error).", \"content\":".json_encode($content)."}";
     }
 
     public function __call($name, $args)

@@ -13,7 +13,7 @@ class Endpoint extends Backend
 
         if (!is_array($query) || empty($query) || !is_numeric($query["ISBN"]))
         {
-            $this->respondWith("ISBN must be a number!", array("HTTP/1.1 406 Not Acceptable"));
+            $this->respondNotAcceptable("ISBN must be a number");
             exit();
         }
 
@@ -22,7 +22,7 @@ class Endpoint extends Backend
 
         if (empty($data))
         {
-            $this->respondWith("Something went wrong!", array("HTTP/1.1 404 Not Found"));
+            $this->respondNotFound("Something went wrong");
             exit();
         }
 
