@@ -5,11 +5,23 @@ require_once("../server/backend.php");
 
 class Endpoint extends Backend
 {
+    public function auth($query = array())
+    {
+        $this->issueJWT();
+        $this->broadcastJWT();
+    }
+
     // todo: Validate input before using endpoints?
 
     public function getBooks($query = array())
     {
-        $this->renewJWT();
+        // https://wiki.php.net/rfc/isset_ternary
+        $jwt = $_SERVER["HTTP_AUTHORIZATION"] ?? null;
+        if ($jwt == null || $this->validateJWT(substr($jwt, strlen("Bearer "))) == false)
+        {
+            $this->respondUnauthorized("Invalid bearer");
+            exit();
+        }
 
         if (!is_array($query) || empty($query) || !is_numeric($query["ISBN"]))
         {
@@ -32,7 +44,12 @@ class Endpoint extends Backend
 
     public function getMovies($query = array())
     {
-        $this->renewJWT();
+        $jwt = $_SERVER["HTTP_AUTHORIZATION"] ?? null;
+        if ($jwt == null || $this->validateJWT(substr($jwt, strlen("Bearer "))) == false)
+        {
+            $this->respondUnauthorized("Invalid bearer");
+            exit();
+        }
 
         if (!is_array($query) || empty($query))
         {

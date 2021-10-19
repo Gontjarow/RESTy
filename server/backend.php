@@ -53,6 +53,31 @@ Class Backend
         }
     }
 
+    protected function validateJWT($jwt)
+    {
+        // todo: This could be a single function-call from a framework.
+        // For this demo, there's only one user, so I'll handwave this a little bit...
+        // 1. Check that the JWT is well formed.
+        //  A) three segments: "header.body.signature" (base64url)
+        //  B) header/signature should decode into valid JSON
+        // 2. Check the signature.
+        //  A) "alg" should match stored JWT
+        //  B) Re-encode stored JWT and check signatures match.
+        // 3. Check the standard claims.
+        //  A) "iss" should match us.
+        //  B) "exp" shouldn't be in the past.
+
+        if ($this->jwt == $jwt)
+            return true;
+        else
+            return false;
+    }
+
+    protected function broadcastJWT()
+    {
+        $this->respondOK($this->jwt);
+    }
+
     // todo: These could go into a Response class.
     protected function respondWith($data, $headers = array())
     {
@@ -75,6 +100,12 @@ Class Backend
     {
         $this->respondWith($this->json($data, true),
             array("Content-Type: application/json", "HTTP/1.1 406 Not Acceptable"));
+    }
+
+    protected function respondUnauthorized($data)
+    {
+        $this->respondWith($this->json($data, true),
+            array("Content-Type: application/json", "HTTP/1.1 401 Unauthorized"));
     }
 
     protected function respondNotFound($data)
