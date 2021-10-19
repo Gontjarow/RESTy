@@ -1,6 +1,6 @@
 <?php
 
-$jwt = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJsb2NhbGhvc3QiLCJpYXQiOjE2MzQ2MDU2NjcsImV4cCI6MTYzNDYwNTc4N30.TCzuP8vIM-xX--Z0A-UV1c0v7Ml-XSozyWZK2EDCP5k";
+$jwt = "header.body.signature";
 $url = null;
 
 if ($argc > 1 && $argv[1] != "auth")
