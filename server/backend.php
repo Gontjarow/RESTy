@@ -35,7 +35,10 @@ Class Backend
             "exp" => $this->clock->modify("+2 minutes")->getTimestamp(),
         ];
 
-        $this->jwt = JWT::encode($data, JTW_SECRET, $this->encoding);
+        // Turns out $jwt doesn't survive between connections.
+        $jwt = JWT::encode($data, JTW_SECRET, $this->encoding);
+        $this->jwt = $jwt;
+        $_SESSION["JWT"] = $jwt;
     }
 
     protected function renewJWT()
@@ -67,7 +70,7 @@ Class Backend
         //  A) "iss" should match us.
         //  B) "exp" shouldn't be in the past.
 
-        if ($this->jwt == $jwt)
+        if ($_SESSION["JWT"] == $jwt)
             return true;
         else
             return false;
