@@ -1,6 +1,6 @@
 <?php
 
-$jwt = "header.body.signature";
+$jwt = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJsb2NhbGhvc3QiLCJpYXQiOjE2MzQ2MDU2NjcsImV4cCI6MTYzNDYwNTc4N30.TCzuP8vIM-xX--Z0A-UV1c0v7Ml-XSozyWZK2EDCP5k";
 $url = null;
 
 if ($argc > 1 && $argv[1] != "auth")
@@ -8,14 +8,14 @@ if ($argc > 1 && $argv[1] != "auth")
     if ($argv[1] == "book")
     {
         $argv[2] = $argv[2] ?? "";
-        $url = "http://localhost:8000/client.php/getBooks?ISBN={$argv[2]}";
+        $url = "http://localhost:8000/search.php/getBooks?ISBN={$argv[2]}";
     }
     else if ($argv[1] == "movie")
     {
         $argv[2] = $argv[2] ?? "";
         $argv[3] = $argv[3] ?? "";
         $argv[4] = $argv[4] ?? "";
-        $url = "http://localhost:8000/client.php/getMovies?Title={$argv[2]}&Year={$argv[3]}&Plot={$argv[4]}";
+        $url = "http://localhost:8000/search.php/getMovies?Title={$argv[2]}&Year={$argv[3]}&Plot={$argv[4]}";
     }
     else
     {
@@ -24,7 +24,7 @@ if ($argc > 1 && $argv[1] != "auth")
 }
 else
 {
-    $url = "http://localhost:8000/client.php/auth";
+    $url = "http://localhost:8000/search.php/auth";
 }
 
 if (!empty($url))
