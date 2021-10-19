@@ -19,7 +19,10 @@ class Endpoint extends Backend
         $jwt = $_SERVER["HTTP_AUTHORIZATION"] ?? null;
         if ($jwt == null || $this->validateJWT(substr($jwt, strlen("Bearer "))) == false)
         {
-            $this->respondUnauthorized("Invalid bearer");
+            if ($jwt == null)
+                $this->respondUnauthorized("Missing bearer");
+            else
+                $this->respondUnauthorized("Invalid bearer");
             exit();
         }
 
@@ -47,7 +50,10 @@ class Endpoint extends Backend
         $jwt = $_SERVER["HTTP_AUTHORIZATION"] ?? null;
         if ($jwt == null || $this->validateJWT(substr($jwt, strlen("Bearer "))) == false)
         {
-            $this->respondUnauthorized("Invalid bearer");
+            if ($jwt == null)
+                $this->respondUnauthorized("Missing bearer");
+            else
+                $this->respondUnauthorized("Invalid bearer");
             exit();
         }
 

@@ -8,7 +8,6 @@ use Firebase\JWT\JWT;
 Class Backend
 {
     // Any persistent database connections could be managed here.
-    // todo: establish JWT for future calls.
 
     private $clock;
     private $issuer;
